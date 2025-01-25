@@ -1,5 +1,5 @@
 import { ESbLayer, ESbElementOrigin, ESbElementProperty, ESbElementEasing } from "../types/enums";
-import { TStoryboardElementColor, TStoryboardElementData, TStoryboardElementDefaultProps, TStoryboardElementFade, TStoryboardElementLoop, TStoryboardElementMove, TStoryboardElementMoveX, TStoryboardElementMoveY, TStoryboardElementParameters, TStoryboardElementPropertyItem, TStoryboardElementPropertyMap, TStoryboardElementRotate, TStoryboardElementScale, TStoryboardElementScaleVec, TUnstrictStoryboardElementData } from "../types/types";
+import { TStoryboardElementColor, TStoryboardElementData, TStoryboardElementDefaultProps, TStoryboardElementFade, TStoryboardElementLoop, TStoryboardElementMove, TStoryboardElementMoveX, TStoryboardElementMoveY, TStoryboardElementParameters, TStoryboardElementPropertyItem, TStoryboardElementPropertyMap, TStoryboardElementRotate, TStoryboardElementScale, TStoryboardElementScaleVec, TStoryboardElementTrigger, TUnstrictStoryboardElementData } from "../types/types";
 import { UnionToIntersection } from "../types/utils";
 import { convertPropertyToString } from "../utils/converters";
 import SbVectorValue from "./values/sbVectorValue";
@@ -43,6 +43,10 @@ abstract class StoryboardElement {
 
     loop(data: TStoryboardElementLoop) {
         return this.#addProperty(ESbElementProperty.L, { properties: data.loopedProperties(), ...data }, "loop");
+    }
+
+    trigger(data: TStoryboardElementTrigger) {
+        return this.#addProperty(ESbElementProperty.T, { properties: data.triggeredProperties(), ...data }, "trigger");
     }
 
     move(data: TStoryboardElementMove): StoryboardElement {

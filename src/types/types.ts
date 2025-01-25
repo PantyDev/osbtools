@@ -1,5 +1,5 @@
 
-import SbLoop from "../storyboarding/sbLoop";
+import SbLoop from "../storyboarding/sbEmptyElement";
 import SbColorValue from "../storyboarding/values/sbColorValue";
 import SbVectorValue from "../storyboarding/values/sbVectorValue";
 import { ESbElementEasing, ESbElementOrigin, ESbElementProperty, ESbLayer } from "./enums";
@@ -43,6 +43,14 @@ type TStoryboardElementLoop = {
     startTime: number;
     loopCount: number;
     loopedProperties: () => TStoryboardElementPropertyItem<ESbElementProperty>[],
+    properties?: TStoryboardElementPropertyItem<ESbElementProperty>[]; 
+};
+
+type TStoryboardElementTrigger = {
+    triggerName: string;
+    startTime: number;
+    endTime: number;
+    triggeredProperties: () => TStoryboardElementPropertyItem<ESbElementProperty>[],
     properties?: TStoryboardElementPropertyItem<ESbElementProperty>[]; 
 };
 
@@ -103,6 +111,7 @@ type TStoryboardElementPropertyMap = {
     [ESbElementProperty.C]: TStoryboardElementColor,
     [ESbElementProperty.P]: TStoryboardElementParameters,
     [ESbElementProperty.L]: TStoryboardElementLoop,
+    [ESbElementProperty.T]: TStoryboardElementTrigger
 };
 
 type TStoryboardElementPropertyItem<T extends ESbElementProperty> = {
@@ -129,6 +138,7 @@ export type {
     TStoryboardElementParameters,
     TStoryboardElementParametersTypes,
     TStoryboardElementLoop,
+    TStoryboardElementTrigger,
     TStoryboardElementPropertyItem,
     TStoryboardElementPropertyMap
 };

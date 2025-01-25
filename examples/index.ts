@@ -1,4 +1,4 @@
-import { SbAnimation, SbLoop, SbSprite, SbVectorValue, Storyboard } from "../src";
+import { SbAnimation, SbEmptyElement, SbSprite, SbVectorValue, Storyboard } from "../src";
 import { ESbElementEasing, ESbElementLoopType, ESbLayer } from "../src/types/enums";
 import fs from 'fs'
 
@@ -36,7 +36,7 @@ sprite
         startTime: 640000,
         loopCount: 20,
         loopedProperties: () => {
-            const loop = new SbLoop();
+            const loop = new SbEmptyElement();
             loop
                 .scale({
                     startTime: 0,
@@ -55,13 +55,13 @@ sprite
         }
     })
     .flipH({
-        startTime: 640000,
+        startTime: 633191,
     })
     .flipV({
-        startTime: 640000,
+        startTime: 633191,
     })
     .additive({
-        startTime: 640000,
+        startTime: 633191,
     })
 
 const animation = new SbAnimation({ path: "bg.png", layer: ESbLayer.Background, frameCount: 20, frameDelay: 100, loopType: ESbElementLoopType.LoopForever });
@@ -69,6 +69,29 @@ animation
     .move({
         startTime: 633191,
         startPosition: new SbVectorValue({ x: 320, y: 240 })
+    })
+    .trigger({
+        triggerName: "Passing",
+        startTime: 0,
+        endTime: 10000,
+        triggeredProperties: () => {
+            const trigger = new SbEmptyElement();
+            trigger
+                .scale({
+                    startTime: 0,
+                    endTime: 200,
+                    startScale: 0.25,
+                    endScale: 0.5
+                })
+                .move({
+                    easing: ESbElementEasing.OutExpo,
+                    startTime: 200,
+                    endTime: 400,
+                    startPosition: new SbVectorValue({ x: 320, y: 240 }),
+                    endPosition: new SbVectorValue({ x: 500, y: 240 })
+                });
+            return trigger.getProperties();
+        },
     })
 
 console.log("add sprite: ", sb.addElement(sprite));

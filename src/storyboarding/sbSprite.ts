@@ -1,5 +1,5 @@
 import { ESbElementProperty } from "../types/enums";
-import { TStoryboardElementData, TStoryboardElementLoop, TUnstrictStoryboardElementData } from "../types/types";
+import { TStoryboardElementData, TStoryboardElementLoop, TStoryboardElementTrigger, TUnstrictStoryboardElementData } from "../types/types";
 import StoryboardElement from "./storyboardElement";
 
 class SbSprite extends StoryboardElement {
@@ -28,8 +28,9 @@ class SbSprite extends StoryboardElement {
 
         const properties = this.getProperties().map(property => {
             const title = ` ${property.toString()}`;
-            if(property.type === ESbElementProperty.L) {
-                const loopedProperties = (property.data as TStoryboardElementLoop).properties?.map(property => `  ${property.toString()}`).join("\n");
+            if([ESbElementProperty.L, ESbElementProperty.T].includes(property.type)) {
+                const loopedProperties = (property.data as TStoryboardElementLoop | TStoryboardElementTrigger)
+                    .properties?.map(property => `  ${property.toString()}`).join("\n");
                 return [title, loopedProperties].join("\n")
             }
             return title;

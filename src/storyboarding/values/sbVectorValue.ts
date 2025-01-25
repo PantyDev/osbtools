@@ -1,4 +1,4 @@
-import { isNumber } from "../../utils/checks";
+import { getNumberOrNull } from "../../utils/checks";
 
 class SbVectorValue {
     #x: number;
@@ -17,7 +17,7 @@ class SbVectorValue {
     }
 
     toString(): string | null {
-        return [isNumber(this.#x), isNumber(this.#y), isNumber(this.#z)].filter(x => x !== null).join(",");
+        return [getNumberOrNull(this.#x), getNumberOrNull(this.#y), getNumberOrNull(this.#z)].filter(x => x !== null).join(",");
     }
 }
 

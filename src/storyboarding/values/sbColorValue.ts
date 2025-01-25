@@ -1,4 +1,4 @@
-import { isNumber } from "../../utils/checks";
+import { getNumberOrNull } from "../../utils/checks";
 
 class SbColorValue {
     #r: number;
@@ -17,7 +17,7 @@ class SbColorValue {
     }
 
     toString(): string {
-        return [isNumber(this.#r), isNumber(this.#g), isNumber(this.#b)].filter(x => x !== null).join(",");
+        return [getNumberOrNull(this.#r), getNumberOrNull(this.#g), getNumberOrNull(this.#b)].filter(x => x !== null).join(",");
     }
 }
 

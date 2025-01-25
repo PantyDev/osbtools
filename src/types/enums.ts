@@ -66,7 +66,8 @@ enum ESbElementProperty {
     V = "V",
     C = "C",
     P = "P",
-    L = "L"
+    L = "L",
+    T = "T"
 }
 
 enum ESbElementLoopType {

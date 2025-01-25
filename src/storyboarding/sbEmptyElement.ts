@@ -2,7 +2,7 @@ import { ESbElementProperty } from "../types/enums";
 import { TStoryboardElementLoop } from "../types/types";
 import StoryboardElement from "./storyboardElement";
 
-class SbLoop extends StoryboardElement {
+class SbEmptyElement extends StoryboardElement {
     constructor() {
         super({ path: "" });
     }
@@ -12,4 +12,4 @@ class SbLoop extends StoryboardElement {
     }
 }
 
-export default SbLoop;
+export default SbEmptyElement;
