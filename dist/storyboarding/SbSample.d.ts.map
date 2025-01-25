@@ -1,1 +1,0 @@
-{"version":3,"file":"SbSample.d.ts","sourceRoot":"","sources":["../../src/storyboarding/SbSample.ts"],"names":[],"mappings":"AACA,OAAO,EAAE,sBAAsB,EAAE,4BAA4B,EAAE,MAAM,gBAAgB,CAAC;AACtF,OAAO,QAAQ,MAAM,YAAY,CAAC;AAElC,cAAM,QAAS,SAAQ,QAAQ;;gBAKf,EACR,IAAI,EACJ,SAAS,EACT,KAAK,EACL,MAAM,EACT,EAAG,4BAA4B;IAQhC,QAAQ,CAAC,IAAI,EAAE,sBAAsB,GAAG,MAAM;CAOjD;AAED,eAAe,QAAQ,CAAC"}
