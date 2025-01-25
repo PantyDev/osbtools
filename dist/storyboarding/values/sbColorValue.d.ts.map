@@ -1,0 +1,1 @@
+{"version":3,"file":"sbColorValue.d.ts","sourceRoot":"","sources":["../../../src/storyboarding/values/sbColorValue.ts"],"names":[],"mappings":"AAEA,cAAM,YAAY;;gBAIF,EACR,CAAK,EAAE,CAAK,EAAE,CAAK,EACtB,EAAE;QACC,CAAC,EAAE,MAAM,CAAC;QACV,CAAC,EAAE,MAAM,CAAC;QACV,CAAC,EAAE,MAAM,CAAC;KACb;IAMD,QAAQ,IAAI,MAAM;CAGrB;AAED,eAAe,YAAY,CAAC"}

@@ -1,7 +1,6 @@
 {
 	"name": "osbtools",
 	"version": "1.0.1",
-	"main": "index.js",
 	"scripts": {
 		"dev": "npx ts-node ./examples/index.ts",
 		"build": "npx tsc"
@@ -14,5 +13,7 @@
 	},
 	"devDependencies": {
 		"@types/node": "^22.10.10"
-	}
+	},
+	"main": "dist/index.js",
+  	"types": "src/index.ts"
 }
