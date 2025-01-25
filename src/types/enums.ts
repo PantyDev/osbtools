@@ -3,7 +3,16 @@ enum ESbLayer {
     Foreground = "Foreground",
     Fail = "Fail",
     Pass = "Pass",
-    Overlay = "Overlay"
+    Overlay = "Overlay",
+    Sound = "Sound"
+};
+
+enum ESbLayerId {
+    Background = 0,
+    Fail = 1,
+    Pass = 2,
+    Foreground = 3,
+    Overlay = 4
 };
 
 enum ESbElementOrigin {
@@ -75,4 +84,4 @@ enum ESbElementLoopType {
     LoopOnce = "LoopOnce",
 }
 
-export { ESbLayer, ESbElementOrigin, ESbElementProperty, ESbElementEasing, ESbElementLoopType }
+export { ESbLayer, ESbLayerId, ESbElementOrigin, ESbElementProperty, ESbElementEasing, ESbElementLoopType }

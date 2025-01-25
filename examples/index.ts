@@ -1,5 +1,5 @@
-import { SbAnimation, SbEmptyElement, SbSprite, SbVectorValue, Storyboard } from "../src";
-import { ESbElementEasing, ESbElementLoopType, ESbLayer } from "../src/types/enums";
+import { SbAnimation, SbEmptyElement, SbSample, SbSprite, SbVectorValue, Storyboard } from "../src";
+import { ESbElementEasing, ESbElementLoopType, ESbLayer, ESbLayerId } from "../src/types/enums";
 import fs from 'fs'
 
 const sb = new Storyboard();
@@ -94,8 +94,11 @@ animation
         },
     })
 
+const sound = new SbSample({ path: "audio.mp3", startTime: 906554, layer: ESbLayerId.Background, volume: 100 });
+
 console.log("add sprite: ", sb.addElement(sprite));
 console.log("\n\nadd animations: ", sb.addElement(animation));
+console.log("\n\nadd sounds: ", sb.addElement(sound));
 console.log("\n\nelements: ", sb.getElements());
 console.log("\n\nlayers: ", sb.getLayers());
 console.log("\n\nstring: ", sb.toString());

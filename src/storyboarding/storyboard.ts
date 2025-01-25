@@ -17,6 +17,7 @@ class Storyboard {
         [ESbLayer.Pass]: layerData("//Storyboard Layer 2 (Pass)"),
         [ESbLayer.Foreground]: layerData("//Storyboard Layer 3 (Foreground)"),
         [ESbLayer.Overlay]: layerData("//Storyboard Layer 4 (Overlay)"),
+        [ESbLayer.Sound]: layerData("//Storyboard Sound Samples"),
     } as const;
 
     constructor() {}
@@ -39,14 +40,13 @@ class Storyboard {
         return [
             "[Events]",
             "//Background and Video events",
-            ...Object.entries(this.getLayers()).map(([type, layerData]) => {
+            ...Object.entries(this.getLayers()).map(([_, layerData]) => {
                 const { title, elements } = layerData ?? {};
                 return [
                     title,
                     ...elements.map(element => element.toString())
                 ].join("\n");
-            }),
-            "//Storyboard Sound Samples"
+            })
         ].join("\n")
     } 
 }

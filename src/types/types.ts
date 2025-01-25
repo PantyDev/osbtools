@@ -1,8 +1,6 @@
-
-import SbLoop from "../storyboarding/sbEmptyElement";
 import SbColorValue from "../storyboarding/values/sbColorValue";
 import SbVectorValue from "../storyboarding/values/sbVectorValue";
-import { ESbElementEasing, ESbElementOrigin, ESbElementProperty, ESbLayer } from "./enums";
+import { ESbElementEasing, ESbElementOrigin, ESbElementProperty, ESbLayer, ESbLayerId } from "./enums";
 
 type TSbLayerData<T> = {
     title: string;
@@ -31,6 +29,13 @@ type TStoryboardElementAnimationData = {
     frameCount: number,
     frameDelay: number,
     loopType?: string
+}
+
+type TStoryboardElementSampleData = {
+    path: string;
+    startTime: number;
+    layer: ESbLayerId;
+    volume: number;
 }
 
 type TStoryboardElementDefaultProps = {
@@ -126,6 +131,7 @@ export type {
     TUnstrictStoryboardElementData, 
     TStoryboardElementData,
     TStoryboardElementAnimationData,
+    TStoryboardElementSampleData,
     TStoryboardElementDefaultProps,
     TStoryboardElementMove,
     TStoryboardElementMoveX,
