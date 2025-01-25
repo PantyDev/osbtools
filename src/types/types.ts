@@ -1,6 +1,7 @@
 import SbColorValue from "../storyboarding/values/sbColorValue";
 import SbVectorValue from "../storyboarding/values/sbVectorValue";
 import { ESbElementEasing, ESbElementOrigin, ESbElementProperty, ESbLayer, ESbLayerId } from "./enums";
+import { Expand } from "./utils";
 
 type TSbLayerData<T> = {
     title: string;
@@ -59,10 +60,10 @@ type TStoryboardElementTrigger = {
     properties?: TStoryboardElementPropertyItem<ESbElementProperty>[]; 
 };
 
-type TStoryboardElementMove = {
+type TStoryboardElementMove = Expand<{
     startPosition: SbVectorValue;
     endPosition?: SbVectorValue;
-} & TStoryboardElementDefaultProps;
+} & TStoryboardElementDefaultProps>;
 
 type TStoryboardElementMoveX = {
     startPositionX: number;

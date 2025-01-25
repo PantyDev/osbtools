@@ -96,6 +96,20 @@ animation
 
 const sound = new SbSample({ path: "audio.mp3", startTime: 906554, layer: ESbLayerId.Background, volume: 100 });
 
+const testSprite = new SbSprite({ path: "bg.png", layer: ESbLayer.Background });
+
+for(let i = 0; i < 10; i++) {
+    testSprite.move({
+        easing: ESbElementEasing.InExpo,
+        startTime: 906554 + (i * 200),
+        endTime: 906554 + ((i + 1) * 200),
+        startPosition: new SbVectorValue({ x: 320 + (i * 5), y: 240 }),
+        endPosition: new SbVectorValue({ x: 320 + ((i + 1) * 5), y: 240 })
+    })
+}
+
+sb.addElement(testSprite);
+
 console.log("add sprite: ", sb.addElement(sprite));
 console.log("\n\nadd animations: ", sb.addElement(animation));
 console.log("\n\nadd sounds: ", sb.addElement(sound));

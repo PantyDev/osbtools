@@ -5,9 +5,9 @@
 	"scripts": {
 		"dev": "npx ts-node ./examples/index.ts"
 	},
-	"author": "",
+	"author": "PantyDev",
 	"license": "ISC",
-	"description": "PantyDev",
+	"description": "",
 	"dependencies": {
 		"typescript": "^5.7.3"
 	},
