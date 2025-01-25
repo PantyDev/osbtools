@@ -8,24 +8,7 @@ class SbLoop extends StoryboardElement {
     }
 
     toString(): string {
-        const {
-            layer,
-            origin,
-            path,
-            defaultPosition
-        } = this.getData();
-
-        const title = ["Sprite",layer,origin,`"${path}"`,defaultPosition.toString()].join(",");
-
-        const properties = this.getProperties().map(property => [` ${property.toString()}`, ...(() => {
-            if(property.type !== ESbElementProperty.L) return [];
-            return (property.data as TStoryboardElementLoop).properties?.map(property => `  ${property.toString()}`) || [];
-        })()].join("\n"))
-
-        return [
-            title,
-            ...properties
-        ].join("\n")
+        return "";
     }
 }
 
