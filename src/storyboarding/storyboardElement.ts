@@ -1,119 +1,149 @@
 import { ESbLayer, ESbElementOrigin, ESbElementProperty, ESbElementEasing } from "../types/enums";
-import { TStoryboardElementColor, TStoryboardElementData, TStoryboardElementDefaultProps, TStoryboardElementFade, TStoryboardElementLoop, TStoryboardElementMove, TStoryboardElementMoveX, TStoryboardElementMoveY, TStoryboardElementParameters, TStoryboardElementProperties, TStoryboardElementPropertyItem, TStoryboardElementPropertyMap, TStoryboardElementRotate, TStoryboardElementScale, TStoryboardElementScaleVec, TStoryboardElementTrigger, TUnstrictStoryboardElementData } from "../types/types";
+import {
+	TStoryboardElementColor,
+	TStoryboardElementData,
+	TStoryboardElementDefaultProps,
+	TStoryboardElementFade,
+	TStoryboardElementLoop,
+	TStoryboardElementMove,
+	TStoryboardElementMoveX,
+	TStoryboardElementMoveY,
+	TStoryboardElementProperties,
+	TStoryboardElementPropertyItem,
+	TStoryboardElementPropertyMap,
+	TStoryboardElementRotate,
+	TStoryboardElementScale,
+	TStoryboardElementScaleVec,
+	TStoryboardElementTrigger,
+	TUnstrictStoryboardElementData
+} from "../types/types";
 import { UnionToIntersection } from "../types/utils";
 import { convertPropertyToString } from "../utils/converters";
 import SbVectorValue from "./values/sbVectorValue";
 
 abstract class StoryboardElement {
-    #data: TStoryboardElementData;
-    #properties: TStoryboardElementProperties = [] as unknown as TStoryboardElementProperties;
-    
+	#data: TStoryboardElementData;
+	#properties: TStoryboardElementProperties = [] as unknown as TStoryboardElementProperties;
 
-    constructor({
-        path = "", 
-        layer = ESbLayer.Background, 
-        origin = ESbElementOrigin.Centre, 
-        defaultPosition = new SbVectorValue({ x: 320, y: 240 }), 
-    }: TUnstrictStoryboardElementData) {
-        this.#data = {
-            path,
-            layer,
-            origin,
-            defaultPosition,
-        };
-        this.#properties.getProperty = function <T extends ESbElementProperty>(index: number) {
-            return this[index] as TStoryboardElementPropertyItem<T>
-        }
-    }
+	constructor({
+		path = "",
+		layer = ESbLayer.Background,
+		origin = ESbElementOrigin.Centre,
+		defaultPosition = new SbVectorValue({ x: 320, y: 240 })
+	}: TUnstrictStoryboardElementData) {
+		this.#data = {
+			path,
+			layer,
+			origin,
+			defaultPosition
+		};
+		this.#properties.getProperty = function <T extends ESbElementProperty>(index: number) {
+			return this[index] as TStoryboardElementPropertyItem<T>;
+		};
+	}
 
-    getData(): TStoryboardElementData {
-        return this.#data;
-    }
+	getData(): TStoryboardElementData {
+		return this.#data;
+	}
 
-    getProperties(): TStoryboardElementProperties | undefined {
-        return this.#properties;
-    }
+	getProperties(): TStoryboardElementProperties | undefined {
+		return this.#properties;
+	}
 
-    getProperty<T extends ESbElementProperty>(index: number, cb?: (property: TStoryboardElementPropertyItem<T>) => TStoryboardElementPropertyItem<T>): TStoryboardElementPropertyItem<T> {
-        if(cb) this.#properties[index] = cb(this.#properties[index] as TStoryboardElementPropertyItem<T>)
-        return this.#properties[index] as TStoryboardElementPropertyItem<T>;
-    }
+	getProperty<T extends ESbElementProperty>(
+		index: number,
+		cb?: (property: TStoryboardElementPropertyItem<T>) => TStoryboardElementPropertyItem<T>
+	): TStoryboardElementPropertyItem<T> {
+		if (cb) this.#properties[index] = cb(this.#properties[index] as TStoryboardElementPropertyItem<T>);
+		return this.#properties[index] as TStoryboardElementPropertyItem<T>;
+	}
 
-    #addProperty<T extends ESbElementProperty>(type: T, data: TStoryboardElementPropertyMap[T], convertType: keyof typeof convertPropertyToString) {  
-        const updatedData: TStoryboardElementPropertyMap[T] = { easing: ESbElementEasing.Linear, ...data };
-        type TStoryboardElementPropertiesIntersection = UnionToIntersection<TStoryboardElementPropertyMap[keyof TStoryboardElementPropertyMap]>;
-        
-        this.#properties.push({
-            type, data: updatedData, toString: () => convertPropertyToString[convertType](updatedData as TStoryboardElementPropertiesIntersection)
-        })
+	#addProperty<T extends ESbElementProperty>(
+		type: T,
+		data: TStoryboardElementPropertyMap[T],
+		convertType: keyof typeof convertPropertyToString
+	) {
+		const updatedData: TStoryboardElementPropertyMap[T] = {
+			easing: ESbElementEasing.Linear,
+			...data
+		};
+		type TStoryboardElementPropertiesIntersection = UnionToIntersection<
+			TStoryboardElementPropertyMap[keyof TStoryboardElementPropertyMap]
+		>;
 
-        return this;
-    }
+		this.#properties.push({
+			type,
+			data: updatedData,
+			toString: () => convertPropertyToString[convertType](updatedData as TStoryboardElementPropertiesIntersection)
+		});
 
-    loop(data: TStoryboardElementLoop) {
-        const loopData = { 
-            ...data, 
-            properties: data.loopedProperties(),  
-        }
-        return this.#addProperty(ESbElementProperty.L, loopData, "loop");
-    }
+		return this;
+	}
 
-    trigger(data: TStoryboardElementTrigger) {
-        const triggerData = { 
-            ...data, 
-            properties: data.triggeredProperties(),  
-        }
-        return this.#addProperty(ESbElementProperty.T, triggerData, "trigger");
-    }
+	loop(data: TStoryboardElementLoop) {
+		const loopData = {
+			...data,
+			properties: data.loopedProperties()
+		};
+		return this.#addProperty(ESbElementProperty.L, loopData, "loop");
+	}
 
-    move(data: TStoryboardElementMove): StoryboardElement {
-        return this.#addProperty(ESbElementProperty.M, data, "move");
-    }
+	trigger(data: TStoryboardElementTrigger) {
+		const triggerData = {
+			...data,
+			properties: data.triggeredProperties()
+		};
+		return this.#addProperty(ESbElementProperty.T, triggerData, "trigger");
+	}
 
-    moveX(data: TStoryboardElementMoveX): StoryboardElement {
-        return this.#addProperty(ESbElementProperty.MX, data, "moveX");
-    }
+	move(data: TStoryboardElementMove): StoryboardElement {
+		return this.#addProperty(ESbElementProperty.M, data, "move");
+	}
 
-    moveY(data: TStoryboardElementMoveY): StoryboardElement {
-        return this.#addProperty(ESbElementProperty.MY, data, "moveY");
-    }
+	moveX(data: TStoryboardElementMoveX): StoryboardElement {
+		return this.#addProperty(ESbElementProperty.MX, data, "moveX");
+	}
 
-    rotate(data: TStoryboardElementRotate): StoryboardElement {
-        return this.#addProperty(ESbElementProperty.R, data, "rotate");
-    }
+	moveY(data: TStoryboardElementMoveY): StoryboardElement {
+		return this.#addProperty(ESbElementProperty.MY, data, "moveY");
+	}
 
-    fade(data: TStoryboardElementFade): StoryboardElement {
-        return this.#addProperty(ESbElementProperty.F, data, "fade");
-    }
+	rotate(data: TStoryboardElementRotate): StoryboardElement {
+		return this.#addProperty(ESbElementProperty.R, data, "rotate");
+	}
 
-    scale(data: TStoryboardElementScale): StoryboardElement {
-        return this.#addProperty(ESbElementProperty.S, data, "scale");
-    }
+	fade(data: TStoryboardElementFade): StoryboardElement {
+		return this.#addProperty(ESbElementProperty.F, data, "fade");
+	}
 
-    scaleVec(data: TStoryboardElementScaleVec): StoryboardElement {
-        return this.#addProperty(ESbElementProperty.V, data, "scaleVec");
-    }
+	scale(data: TStoryboardElementScale): StoryboardElement {
+		return this.#addProperty(ESbElementProperty.S, data, "scale");
+	}
 
-    color(data: TStoryboardElementColor): StoryboardElement {
-        return this.#addProperty(ESbElementProperty.C, data, "color");
-    }
-    
-    flipH(data: TStoryboardElementDefaultProps): StoryboardElement {
-        const startParameter = "H";
-        return this.#addProperty(ESbElementProperty.P, {...data, startParameter }, "parameters");
-    }
+	scaleVec(data: TStoryboardElementScaleVec): StoryboardElement {
+		return this.#addProperty(ESbElementProperty.V, data, "scaleVec");
+	}
 
-    flipV(data: TStoryboardElementDefaultProps): StoryboardElement {
-        const startParameter = "V";
-        return this.#addProperty(ESbElementProperty.P, {...data, startParameter }, "parameters");
-    }
+	color(data: TStoryboardElementColor): StoryboardElement {
+		return this.#addProperty(ESbElementProperty.C, data, "color");
+	}
 
-    additive(data: TStoryboardElementDefaultProps): StoryboardElement {
-        const startParameter = "A";
-        return this.#addProperty(ESbElementProperty.P, {...data, startParameter }, "parameters");
-    }
+	flipH(data: TStoryboardElementDefaultProps): StoryboardElement {
+		const startParameter = "H";
+		return this.#addProperty(ESbElementProperty.P, { ...data, startParameter }, "parameters");
+	}
 
-    abstract toString(): string
+	flipV(data: TStoryboardElementDefaultProps): StoryboardElement {
+		const startParameter = "V";
+		return this.#addProperty(ESbElementProperty.P, { ...data, startParameter }, "parameters");
+	}
+
+	additive(data: TStoryboardElementDefaultProps): StoryboardElement {
+		const startParameter = "A";
+		return this.#addProperty(ESbElementProperty.P, { ...data, startParameter }, "parameters");
+	}
+
+	abstract toString(): string;
 }
 
 export default StoryboardElement;

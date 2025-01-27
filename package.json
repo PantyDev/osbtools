@@ -12,10 +12,11 @@
 		"example:index": "npx ts-node ./examples/index.ts",
 		"example:parsing": "npx ts-node ./examples/parsing.ts",
 		"lint": "eslint",
-		"lint:fix": "eslint --fix 'src/**/*.ts' 'tests/**/*.ts'",
-		"format": "prettier --write 'src/**/*.ts' 'tests/**/*.ts'",
+		"lint:fix": "eslint --fix src/**/*.ts tests/**/*.ts",
+		"format": "prettier --check src/**/*.ts tests/**/*.ts",
+		"format:fix": "prettier --write src/**/*.ts tests/**/*.ts",
 		"test": "vitest",
-		"pack": "npx tsc"
+		"pack": "npm run format:fix && npm run lint:fix && npm run test && npx tsc"
 	},
 	"author": "PantyDev <pantypon@gmail.com>",
 	"license": "ISC",
@@ -28,6 +29,7 @@
 	"devDependencies": {
 		"@types/node": "^22.10.10",
 		"@typescript-eslint/eslint-plugin": "^8.22.0",
+		"@typescript-eslint/parser": "^8.22.0",
 		"eslint": "^9.19.0",
 		"eslint-config-prettier": "^10.0.1",
 		"eslint-plugin-prettier": "^5.2.3",
