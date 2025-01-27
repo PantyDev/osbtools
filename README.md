@@ -2,10 +2,24 @@
 
 A set of tools for working with osu! storyboards. 
 
+## Table of contents
+
+* [Getting started](#Getting-started)
+* [Examples of use](#Examples-of-use)
+    - [Create a sprite](#Create-a-sprite)
+    - [Properties for sprite control](#Properties-for-sprite-control)
+    - [Create loop](#Create-loop)
+    - [Create trigger](#Create-trigger)
+    - [Create animation](#Create-animation)
+    - [Create sample](#Create-sample)
+    - [Parse osb file](#Parse-osb-file)
+    - [Get element's property](#Get-elements-property)
+* [Documentation](#Documentation)
+
 ## Getting started
 
 ```bash
-npm i osbtools
+npm i osbtools@latest
 ```
 
 ## Examples of use
@@ -175,7 +189,6 @@ sprite
     })
 ```
 
-
 ### Create animation
 ```ts
 import { SbAnimation } from "../src";
@@ -192,6 +205,43 @@ import { ESbLayerId } from "../src/types/enums";
 
 // create sprite
 const sound = new SbSample({ path: "audio.mp3", startTime: 906554, layer: ESbLayerId.Background, volume: 100 });
+```
+
+### Parse osb file
+```ts
+import { Storyboard } from "../src";
+
+const osb = `
+[Events]
+//Background and Video events
+//Storyboard Layer 0 (Background)
+Animation,Background,Centre,"bg.png",320,240,20,100,LoopForever
+ M,0,633191,,320,240
+ T,Passing,0,10000
+  S,0,0,200,0.25,0.5
+  M,19,200,400,320,240,500,240
+//Storyboard Layer 1 (Fail)
+//Storyboard Layer 2 (Pass)
+//Storyboard Layer 3 (Foreground)
+//Storyboard Layer 4 (Overlay)
+//Storyboard Sound Samples
+`
+
+// create parsed storyboard
+const sb = new Storyboard(osb);
+
+// create new parsed storyboard
+const sb = new Storyboard();
+const newSb = sb.parse(osb);
+```
+
+### Get element's property
+```ts
+// get element's property
+sb.getElement(2)?.getProperty(2);
+
+// get element's group property
+sb.getElement(2)?.getProperty<ESbElementProperty.L>(8).data.properties?.getProperty(0);
 ```
 
 ## Documentation
