@@ -7,9 +7,11 @@
 		"example:parsing": "npx ts-node ./examples/parsing.ts",
 		"pack": "npx tsc"
 	},
-	"author": "PantyDev",
+	"author": "PantyDev <pantypon@gmail.com>",
 	"license": "ISC",
-	"description": "",
+	"repository": "pantosu/osbtools",
+	"homepage": "https://github.com/pantosu/osbtools?#readme",
+	"description": "A set of tools for working with osu! storyboards",
 	"dependencies": {
 		"typescript": "^5.7.3"
 	},
