@@ -1,5 +1,6 @@
 import { Storyboard } from "../src";
 import fs from "fs";
+import { ESbElementProperty } from "../src/types/enums";
 
 const osb = fs.readFileSync(
     './example.osb',
@@ -7,7 +8,7 @@ const osb = fs.readFileSync(
 )
 
 const sb = new Storyboard(osb);
-console.log(sb.getElement(2)?.getProperty(2))
+console.log(sb.getElement(2)?.getProperty<ESbElementProperty.L>(8).data.properties?.getProperty(0))
 
 fs.writeFileSync(
     './example-parsed.osb',
