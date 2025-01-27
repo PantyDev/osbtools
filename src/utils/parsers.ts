@@ -1,5 +1,5 @@
 import SbAnimation from "../storyboarding/sbAnimation";
-import SbSample from "../storyboarding/SbSample";
+import SbSample from "../storyboarding/sbSample";
 import SbSprite from "../storyboarding/sbSprite";
 import StoryboardElement from "../storyboarding/storyboardElement";
 import SbColorValue from "../storyboarding/values/sbColorValue";
