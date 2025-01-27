@@ -6,7 +6,7 @@ A set of tools for working with osu! storyboards.
 
 * [Getting started](#Getting-started)
 * [Examples of use](#Examples-of-use)
-    - [Create a sprite](#package-manager)
+    - [Create a sprite](#Create-a-sprite)
     - [Properties for sprite control](#Properties-for-sprite-control)
     - [Create loop](#Create-loop)
     - [Create trigger](#Create-trigger)
