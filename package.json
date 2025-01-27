@@ -11,7 +11,7 @@
 	"scripts": {
 		"example:index": "npx ts-node ./examples/index.ts",
 		"example:parsing": "npx ts-node ./examples/parsing.ts",
-		"lint": "eslint 'src/**/*.ts' 'tests/**/*.ts'",
+		"lint": "eslint",
 		"lint:fix": "eslint --fix 'src/**/*.ts' 'tests/**/*.ts'",
 		"format": "prettier --write 'src/**/*.ts' 'tests/**/*.ts'",
 		"test": "vitest",
@@ -27,6 +27,7 @@
 	},
 	"devDependencies": {
 		"@types/node": "^22.10.10",
+		"@typescript-eslint/eslint-plugin": "^8.22.0",
 		"eslint": "^9.19.0",
 		"eslint-config-prettier": "^10.0.1",
 		"eslint-plugin-prettier": "^5.2.3",
