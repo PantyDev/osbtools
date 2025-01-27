@@ -1,3 +1,9 @@
+enum ESbElementType {
+    Sprite = "Sprite",
+    Animation = "Animation",
+    Sample = "Sample"
+};
+
 enum ESbLayer {
     Background = "Background",
     Foreground = "Foreground",
@@ -84,4 +90,4 @@ enum ESbElementLoopType {
     LoopOnce = "LoopOnce",
 }
 
-export { ESbLayer, ESbLayerId, ESbElementOrigin, ESbElementProperty, ESbElementEasing, ESbElementLoopType }
+export { ESbElementType, ESbLayer, ESbLayerId, ESbElementOrigin, ESbElementProperty, ESbElementEasing, ESbElementLoopType }

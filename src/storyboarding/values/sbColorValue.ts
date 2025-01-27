@@ -1,15 +1,15 @@
 import { getNumberOrNull } from "../../utils/checks";
 
 class SbColorValue {
-    #r: number;
-    #g: number;
-    #b: number;
+    #r: number | null;
+    #g: number | null;
+    #b: number | null;
     constructor({
-        r = 0, g = 0, b = 0
+        r, g, b
     }: {
-        r: number,
-        g: number,
-        b: number;
+        r: number | null,
+        g: number | null,
+        b: number | null;
     }) {
         this.#r = r;
         this.#g = g;

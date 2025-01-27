@@ -32,4 +32,6 @@ const convertPropertyToString = {
         filterAndConvertProperty([ESbElementProperty.T, data.triggerName, data.startTime, data.endTime])
 };
 
-export { convertPropertyToString };
+const arrayOfUndefinedToNull = (array: (number | undefined)[]) => array.map(x => x === undefined ? null : x);
+
+export { convertPropertyToString, arrayOfUndefinedToNull };

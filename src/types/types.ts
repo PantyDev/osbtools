@@ -1,6 +1,6 @@
 import SbColorValue from "../storyboarding/values/sbColorValue";
 import SbVectorValue from "../storyboarding/values/sbVectorValue";
-import { ESbElementEasing, ESbElementOrigin, ESbElementProperty, ESbLayer, ESbLayerId } from "./enums";
+import { ESbElementEasing, ESbElementLoopType, ESbElementOrigin, ESbElementProperty, ESbLayer, ESbLayerId } from "./enums";
 import { Expand } from "./utils";
 
 type TSbLayerData<T> = {
@@ -126,6 +126,13 @@ type TStoryboardElementPropertyItem<T extends ESbElementProperty> = {
     toString: () => string;
 };
 
+
+type TStoryboardSpriteLineParams = [string, ESbLayer, ESbElementOrigin, string, number, number];
+type TStoryboardAnimationParams = [string, ESbLayer, ESbElementOrigin, string, number, number, number, number, ESbElementLoopType];
+type TStoryboardSampleParams = [string, number, ESbLayerId, string, number];
+type TStoryboardElementDefaultParams = [string, ESbElementEasing, number, number];
+type TStoryboardElementDefaultNumericParams = [...TStoryboardElementDefaultParams, number, number];
+
 export type { 
     TSbLayersBuilder, 
     TSbLayerData, 
@@ -147,5 +154,10 @@ export type {
     TStoryboardElementLoop,
     TStoryboardElementTrigger,
     TStoryboardElementPropertyItem,
-    TStoryboardElementPropertyMap
+    TStoryboardElementPropertyMap,
+    TStoryboardSpriteLineParams,
+    TStoryboardAnimationParams,
+    TStoryboardSampleParams,
+    TStoryboardElementDefaultParams,
+    TStoryboardElementDefaultNumericParams,
 };

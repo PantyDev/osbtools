@@ -1,5 +1,7 @@
-import { ESbLayer } from "../types/enums";
+import { ESbElementProperty, ESbElementType, ESbLayer } from "../types/enums";
 import { TSbLayerData, TSbLayersBuilder } from "../types/types";
+import { parseElementGroupProperty, parseElementProperty, parseElementTitle } from "../utils/parsers";
+import SbEmptyElement from "./sbEmptyElement";
 import StoryboardElement from "./storyboardElement";
 
 const layerData = (title: string): TSbLayerData<StoryboardElement> => ({
@@ -20,12 +22,77 @@ class Storyboard {
         [ESbLayer.Sound]: layerData("//Storyboard Sound Samples"),
     } as const;
 
-    constructor() {}
+    constructor(osb?: string) {
+        if(!osb) return;
+
+        this.parse(osb, false);
+    }
 
     addElement(element: StoryboardElement): Storyboard {
         this.#elements.push(element);
         this.#layers[element.getData().layer].elements.push(element);
         return this;
+    }
+
+    parse(osb: string, createNew: boolean = true): Storyboard | undefined {
+        const sb = new Storyboard();
+
+        let currentPropertyType: ESbElementProperty | null =  null;
+        let currentPropertyTrimmedLine: string | null =  null;
+        let currentGroupElement = new SbEmptyElement();
+        let currentElement: StoryboardElement | null = null;
+        
+        const lines = osb.split("\n");
+
+        lines.forEach((line, index) => {
+            if(line.startsWith("//") || line.startsWith("[")) return;
+
+            const isElementTitle = line.startsWith(ESbElementType.Sprite) || line.startsWith(ESbElementType.Animation) || line.startsWith(ESbElementType.Sample);
+
+            if(isElementTitle) 
+            {
+                currentElement = null;
+            }
+
+            const isElementProperty = line.startsWith(" ");
+            const isElementPropertyGroup = line.startsWith("  ");
+
+            if(currentElement) {
+                const trimmedLine = line.trim();
+                const type = trimmedLine.substring(0, trimmedLine[1] !== "," ? 2 : 1) as ESbElementProperty;
+
+                if(isElementProperty && !isElementPropertyGroup) {
+                    currentPropertyType = type;
+                    currentPropertyTrimmedLine = trimmedLine;
+                    parseElementProperty(trimmedLine, type, currentElement);
+                } else if(isElementPropertyGroup) {
+                    const isLastElementPropertyGroup = (typeof lines[index + 1] === "string" && !lines[index + 1].startsWith("  ") || !lines[index + 1]);
+
+                    parseElementProperty(trimmedLine, type, currentGroupElement);
+                    if(isLastElementPropertyGroup && currentPropertyType && currentPropertyTrimmedLine) {
+                        parseElementGroupProperty(currentPropertyTrimmedLine, currentPropertyType, currentElement, currentGroupElement);
+                        currentGroupElement = new SbEmptyElement();
+                    };
+                }
+            }
+
+            parseElementTitle(line, ESbElementType.Sprite, (element) => {
+                currentElement = element;
+            });
+            parseElementTitle(line, ESbElementType.Animation, (element) => {
+                currentElement = element;
+            });
+            parseElementTitle(line, ESbElementType.Sample, (element) => {
+                currentElement = element;
+            });
+
+            if(currentElement && isElementTitle) {
+                if(!createNew) this.addElement(currentElement);
+                else sb.addElement(currentElement);
+            }
+        });
+
+        if(createNew) return sb;
     }
 
     getElements(): StoryboardElement[] {

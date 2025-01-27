@@ -32,6 +32,30 @@ sprite
         startScale: 1,
         endScale: 0.25
     })
+    .rotate({
+        startTime: 637646,
+        endTime: 640000,
+        startRotation: 0,
+        endRotation: 3
+    })
+    .fade({
+        startTime: 637646,
+        endTime: 640000,
+        startFade: 0,
+        endFade: 1
+    })
+    .moveX({
+        startTime: 637646,
+        endTime: 640000,
+        startPositionX: 0,
+        endPositionX: 1
+    })
+    .moveY({
+        startTime: 637646,
+        endTime: 640000,
+        startPositionY: 0,
+        endPositionY: 1
+    })
     .loop({
         startTime: 640000,
         loopCount: 20,

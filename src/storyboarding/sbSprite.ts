@@ -1,4 +1,4 @@
-import { ESbElementProperty } from "../types/enums";
+import { ESbElementProperty, ESbElementType } from "../types/enums";
 import { TStoryboardElementData, TStoryboardElementLoop, TStoryboardElementTrigger, TUnstrictStoryboardElementData } from "../types/types";
 import StoryboardElement from "./storyboardElement";
 
@@ -20,7 +20,7 @@ class SbSprite extends StoryboardElement {
             defaultPosition
         } = data;
 
-        return ["Sprite",layer,origin,`"${path}"`,defaultPosition.toString()].join(",");
+        return [ESbElementType.Sprite, layer, origin, `"${path}"`, defaultPosition.toString()].join(",");
     }
 
     toString(): string {

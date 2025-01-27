@@ -1,14 +1,14 @@
 import { getNumberOrNull } from "../../utils/checks";
 
 class SbVectorValue {
-    #x: number;
-    #y: number;
+    #x: number | null;
+    #y: number | null;
     #z: number | null = null;
     constructor({
-        x = 0, y = 0, z = null
+        x = null, y = null, z = null
     }: {
-        x: number,
-        y: number,
+        x: number | null,
+        y: number | null,
         z?: number | null;
     }) {
         this.#x = x;
@@ -16,7 +16,7 @@ class SbVectorValue {
         this.#z = z;
     }
 
-    toString(): string | null {
+    toString(): string {
         return [getNumberOrNull(this.#x), getNumberOrNull(this.#y), getNumberOrNull(this.#z)].filter(x => x !== null).join(",");
     }
 }

@@ -1,4 +1,4 @@
-import { ESbElementLoopType } from "../types/enums";
+import { ESbElementLoopType, ESbElementType } from "../types/enums";
 import { TStoryboardElementAnimationData, TStoryboardElementData, TUnstrictStoryboardElementData } from "../types/types";
 import SbSprite from "./sbSprite";
 
@@ -31,7 +31,7 @@ class SbAnimation extends SbSprite {
             defaultPosition
         } = data;
 
-        return ["Animation",layer,origin,`"${path}"`,defaultPosition.toString(), this.#frameCount, this.#frameDelay, this.#loopType].join(",");
+        return [ESbElementType.Animation, layer, origin, `"${path}"`, defaultPosition.toString(), this.#frameCount, this.#frameDelay, this.#loopType].join(",");
     }
 }
 

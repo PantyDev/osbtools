@@ -1,8 +1,10 @@
 {
 	"name": "osbtools",
 	"version": "1.0.2",
+	"keywords": ["osu", "osb", "storyboard", "tools", "parse"],
 	"scripts": {
-		"dev": "npx ts-node ./examples/index.ts",
+		"example:index": "npx ts-node ./examples/index.ts",
+		"example:parsing": "npx ts-node ./examples/parsing.ts",
 		"build": "npx tsc"
 	},
 	"author": "PantyDev",

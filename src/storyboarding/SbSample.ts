@@ -1,4 +1,4 @@
-import { ESbLayer, ESbLayerId } from "../types/enums";
+import { ESbElementType, ESbLayer, ESbLayerId } from "../types/enums";
 import { TStoryboardElementData, TStoryboardElementSampleData } from "../types/types";
 import SbSprite from "./sbSprite";
 
@@ -25,7 +25,7 @@ class SbSample extends SbSprite {
             path,
         } = data;
 
-        return ["Sample", this.#startTime, this.#layer, `"${path}"`, this.#volume].join(",");
+        return [ESbElementType.Sample, this.#startTime, this.#layer, `"${path}"`, this.#volume].join(",");
     }
 }
 
