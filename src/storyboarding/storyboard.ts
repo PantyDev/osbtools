@@ -99,6 +99,10 @@ class Storyboard {
         return this.#elements;
     }
 
+    getElement(index: number): StoryboardElement | null {
+        return this.#elements[index];
+    }
+
     getLayers(): TLayers {
         return this.#layers;
     }

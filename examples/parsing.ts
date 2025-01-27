@@ -7,6 +7,7 @@ const osb = fs.readFileSync(
 )
 
 const sb = new Storyboard(osb);
+console.log(sb.getElement(2)?.getProperty(2))
 
 fs.writeFileSync(
     './example-parsed.osb',

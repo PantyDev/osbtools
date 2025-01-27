@@ -45,19 +45,21 @@ type TStoryboardElementDefaultProps = {
     endTime?: number;
 }
 
+type TStoryboardElementProperties = Array<TStoryboardElementPropertyItem<ESbElementProperty>> & {
+    getProperty: <T extends ESbElementProperty>(index: number) => TStoryboardElementPropertyItem<T>
+}
+
 type TStoryboardElementLoop = {
     startTime: number;
     loopCount: number;
-    loopedProperties: () => TStoryboardElementPropertyItem<ESbElementProperty>[],
-    properties?: TStoryboardElementPropertyItem<ESbElementProperty>[]; 
+    loopedProperties: () => TStoryboardElementProperties | undefined,
 };
 
 type TStoryboardElementTrigger = {
     triggerName: string;
     startTime: number;
     endTime: number;
-    triggeredProperties: () => TStoryboardElementPropertyItem<ESbElementProperty>[],
-    properties?: TStoryboardElementPropertyItem<ESbElementProperty>[]; 
+    triggeredProperties: () => TStoryboardElementProperties | undefined,
 };
 
 type TStoryboardElementMove = Expand<{
@@ -106,6 +108,14 @@ type TStoryboardElementParameters = {
     startParameter: TStoryboardElementParametersTypes
 } & TStoryboardElementDefaultProps;
 
+type TStoryboardElementPropertiesWrapper = {
+    properties: TStoryboardElementProperties | undefined
+}
+
+type TStoryboardElementPropertyGroupMap = {
+    [ESbElementProperty.L]: TStoryboardElementLoop & TStoryboardElementPropertiesWrapper,
+    [ESbElementProperty.T]: TStoryboardElementTrigger & TStoryboardElementPropertiesWrapper
+}
 type TStoryboardElementPropertyMap = {
     [ESbElementProperty.M]: TStoryboardElementMove,
     [ESbElementProperty.MX]: TStoryboardElementMoveX,
@@ -116,9 +126,7 @@ type TStoryboardElementPropertyMap = {
     [ESbElementProperty.V]: TStoryboardElementScaleVec,
     [ESbElementProperty.C]: TStoryboardElementColor,
     [ESbElementProperty.P]: TStoryboardElementParameters,
-    [ESbElementProperty.L]: TStoryboardElementLoop,
-    [ESbElementProperty.T]: TStoryboardElementTrigger
-};
+} & TStoryboardElementPropertyGroupMap;
 
 type TStoryboardElementPropertyItem<T extends ESbElementProperty> = {
     type: T,
@@ -137,6 +145,7 @@ export type {
     TSbLayersBuilder, 
     TSbLayerData, 
     TUnstrictStoryboardElementData, 
+    TStoryboardElementProperties,
     TStoryboardElementData,
     TStoryboardElementAnimationData,
     TStoryboardElementSampleData,
@@ -155,6 +164,7 @@ export type {
     TStoryboardElementTrigger,
     TStoryboardElementPropertyItem,
     TStoryboardElementPropertyMap,
+    TStoryboardElementPropertyGroupMap,
     TStoryboardSpriteLineParams,
     TStoryboardAnimationParams,
     TStoryboardSampleParams,

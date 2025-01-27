@@ -1,12 +1,13 @@
 import { ESbLayer, ESbElementOrigin, ESbElementProperty, ESbElementEasing } from "../types/enums";
-import { TStoryboardElementColor, TStoryboardElementData, TStoryboardElementDefaultProps, TStoryboardElementFade, TStoryboardElementLoop, TStoryboardElementMove, TStoryboardElementMoveX, TStoryboardElementMoveY, TStoryboardElementParameters, TStoryboardElementPropertyItem, TStoryboardElementPropertyMap, TStoryboardElementRotate, TStoryboardElementScale, TStoryboardElementScaleVec, TStoryboardElementTrigger, TUnstrictStoryboardElementData } from "../types/types";
+import { TStoryboardElementColor, TStoryboardElementData, TStoryboardElementDefaultProps, TStoryboardElementFade, TStoryboardElementLoop, TStoryboardElementMove, TStoryboardElementMoveX, TStoryboardElementMoveY, TStoryboardElementParameters, TStoryboardElementProperties, TStoryboardElementPropertyItem, TStoryboardElementPropertyMap, TStoryboardElementRotate, TStoryboardElementScale, TStoryboardElementScaleVec, TStoryboardElementTrigger, TUnstrictStoryboardElementData } from "../types/types";
 import { UnionToIntersection } from "../types/utils";
 import { convertPropertyToString } from "../utils/converters";
 import SbVectorValue from "./values/sbVectorValue";
 
 abstract class StoryboardElement {
     #data: TStoryboardElementData;
-    #properties: TStoryboardElementPropertyItem<ESbElementProperty>[] = [];
+    #properties: TStoryboardElementProperties = [] as unknown as TStoryboardElementProperties;
+    
 
     constructor({
         path = "", 
@@ -20,33 +21,49 @@ abstract class StoryboardElement {
             origin,
             defaultPosition,
         };
+        this.#properties.getProperty = function <T extends ESbElementProperty>(index: number) {
+            return this[index] as TStoryboardElementPropertyItem<T>
+        }
     }
 
     getData(): TStoryboardElementData {
         return this.#data;
     }
 
-    getProperties(): TStoryboardElementPropertyItem<ESbElementProperty>[] {
+    getProperties(): TStoryboardElementProperties | undefined {
         return this.#properties;
+    }
+
+    getProperty<T extends ESbElementProperty>(index: number, cb?: (property: TStoryboardElementPropertyItem<T>) => TStoryboardElementPropertyItem<T>): TStoryboardElementPropertyItem<T> {
+        if(cb) this.#properties[index] = cb(this.#properties[index] as TStoryboardElementPropertyItem<T>)
+        return this.#properties[index] as TStoryboardElementPropertyItem<T>;
     }
 
     #addProperty<T extends ESbElementProperty>(type: T, data: TStoryboardElementPropertyMap[T], convertType: keyof typeof convertPropertyToString) {  
         const updatedData: TStoryboardElementPropertyMap[T] = { easing: ESbElementEasing.Linear, ...data };
-        type TStoryboardElementProperties = UnionToIntersection<TStoryboardElementPropertyMap[keyof TStoryboardElementPropertyMap]>;
+        type TStoryboardElementPropertiesIntersection = UnionToIntersection<TStoryboardElementPropertyMap[keyof TStoryboardElementPropertyMap]>;
         
         this.#properties.push({
-            type, data: updatedData, toString: () => convertPropertyToString[convertType](updatedData as TStoryboardElementProperties)
+            type, data: updatedData, toString: () => convertPropertyToString[convertType](updatedData as TStoryboardElementPropertiesIntersection)
         })
 
         return this;
     }
 
     loop(data: TStoryboardElementLoop) {
-        return this.#addProperty(ESbElementProperty.L, { properties: data.loopedProperties(), ...data }, "loop");
+        const loopData = { 
+            ...data, 
+            properties: data.loopedProperties(),  
+        }
+        return this.#addProperty(ESbElementProperty.L, loopData, "loop");
     }
 
     trigger(data: TStoryboardElementTrigger) {
-        return this.#addProperty(ESbElementProperty.T, { properties: data.triggeredProperties(), ...data }, "trigger");
+        const triggerData = { 
+            ...data, 
+            properties: data.triggeredProperties(),  
+        }
+        return this.#addProperty(ESbElementProperty.T, triggerData, "trigger");
     }
 
     move(data: TStoryboardElementMove): StoryboardElement {

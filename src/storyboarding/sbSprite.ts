@@ -1,5 +1,6 @@
 import { ESbElementProperty, ESbElementType } from "../types/enums";
-import { TStoryboardElementData, TStoryboardElementLoop, TStoryboardElementTrigger, TUnstrictStoryboardElementData } from "../types/types";
+import { TStoryboardElementData, TStoryboardElementLoop, TStoryboardElementPropertyGroupMap, TStoryboardElementPropertyMap, TStoryboardElementTrigger, TUnstrictStoryboardElementData } from "../types/types";
+import { ValueUnion } from "../types/utils";
 import StoryboardElement from "./storyboardElement";
 
 class SbSprite extends StoryboardElement {
@@ -25,20 +26,20 @@ class SbSprite extends StoryboardElement {
 
     toString(): string {
         const title = this.getTitle(this.getData());
-
-        const properties = this.getProperties().map(property => {
+        const properties = this.getProperties();
+        const propertiesString = properties ? properties.map(property => {
             const title = ` ${property.toString()}`;
             if([ESbElementProperty.L, ESbElementProperty.T].includes(property.type)) {
-                const loopedProperties = (property.data as TStoryboardElementLoop | TStoryboardElementTrigger)
-                    .properties?.map(property => `  ${property.toString()}`).join("\n");
-                return [title, loopedProperties].join("\n")
+                const groupProperties = (property.data as ValueUnion<TStoryboardElementPropertyGroupMap>)?.properties;
+                const groupPropertiesString = groupProperties ? groupProperties.map(property => `  ${property.toString()}`).join("\n") : "";
+                return [title, groupPropertiesString].filter(Boolean).join("\n")
             }
             return title;
-        });
+        }) : [];
 
         return [
             title,
-            ...properties
+            ...propertiesString
         ].join("\n");
     }
 }
