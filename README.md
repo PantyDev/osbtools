@@ -13,7 +13,7 @@ A set of tools for working with osu! storyboards.
     - [Create animation](#Create-animation)
     - [Create sample](#Create-sample)
     - [Parse osb file](#Parse-osb-file)
-    - [Get element's property](#Get-element's-property)
+    - [Get element's property](#Get-elements-property)
 * [Documentation](#Documentation)
 
 ## Getting started
