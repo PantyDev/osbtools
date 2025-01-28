@@ -207,6 +207,17 @@ import { ESbLayerId } from "../src/types/enums";
 const sound = new SbSample({ path: "audio.mp3", startTime: 906554, layer: ESbLayerId.Background, volume: 100 });
 ```
 
+### Get element type
+```ts
+import { SbSample } from "../src";
+import { ESbLayerId } from "../src/types/enums";
+
+// get element type
+const sound = new SbSample({ path: "audio.mp3", startTime: 906554, layer: ESbLayerId.Background, volume: 100 });
+console.log(sound.getType()); // Sample
+```
+
+
 ### Parse osb file
 ```ts
 import { Storyboard } from "../src";

@@ -1,4 +1,5 @@
 enum ESbElementType {
+	Empty = "Empty",
 	Sprite = "Sprite",
 	Animation = "Animation",
 	Sample = "Sample"

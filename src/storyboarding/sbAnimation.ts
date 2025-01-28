@@ -3,6 +3,7 @@ import { TStoryboardElementAnimationData, TStoryboardElementData, TUnstrictStory
 import SbSprite from "./sbSprite";
 
 class SbAnimation extends SbSprite {
+	type = ESbElementType.Animation;
 	#frameCount: number = 0;
 	#frameDelay: number = 0;
 	#loopType?: string = ESbElementLoopType.LoopForever;
@@ -27,7 +28,7 @@ class SbAnimation extends SbSprite {
 		const { layer, origin, path, defaultPosition } = data;
 
 		return [
-			ESbElementType.Animation,
+			this.type,
 			layer,
 			origin,
 			`"${path}"`,
