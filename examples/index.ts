@@ -138,6 +138,7 @@ for (let i = 0; i < 10; i++) {
 
 sb.addElement(testSprite);
 
+console.log(animation.getType());
 console.log("add sprite: ", sb.addElement(sprite));
 console.log("\n\nadd animations: ", sb.addElement(animation));
 console.log("\n\nadd sounds: ", sb.addElement(sound));

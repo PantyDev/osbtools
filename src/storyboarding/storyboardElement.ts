@@ -1,4 +1,4 @@
-import { ESbLayer, ESbElementOrigin, ESbElementProperty, ESbElementEasing } from "../types/enums";
+import { ESbLayer, ESbElementOrigin, ESbElementProperty, ESbElementEasing, ESbElementType } from "../types/enums";
 import {
 	TStoryboardElementColor,
 	TStoryboardElementData,
@@ -22,6 +22,7 @@ import { convertPropertyToString } from "../utils/converters";
 import SbVectorValue from "./values/sbVectorValue";
 
 abstract class StoryboardElement {
+	abstract type: ESbElementType;
 	#data: TStoryboardElementData;
 	#properties: TStoryboardElementProperties = [] as unknown as TStoryboardElementProperties;
 
@@ -40,6 +41,10 @@ abstract class StoryboardElement {
 		this.#properties.getProperty = function <T extends ESbElementProperty>(index: number) {
 			return this[index] as TStoryboardElementPropertyItem<T>;
 		};
+	}
+
+	getType(): ESbElementType {
+		return this.type;
 	}
 
 	getData(): TStoryboardElementData {
