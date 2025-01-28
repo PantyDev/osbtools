@@ -4,7 +4,7 @@ import { ValueUnion } from "../types/utils";
 import StoryboardElement from "./storyboardElement";
 
 class SbSprite extends StoryboardElement {
-	#type = ESbElementType.Sprite;
+	type = ESbElementType.Sprite;
 	constructor({ path, layer, origin, defaultPosition }: TUnstrictStoryboardElementData) {
 		super({ path, layer, origin, defaultPosition });
 	}
@@ -12,7 +12,7 @@ class SbSprite extends StoryboardElement {
 	getTitle(data: TStoryboardElementData): string {
 		const { layer, origin, path, defaultPosition } = data;
 
-		return [this.#type, layer, origin, `"${path}"`, defaultPosition.toString()].join(",");
+		return [this.type, layer, origin, `"${path}"`, defaultPosition.toString()].join(",");
 	}
 
 	toString(): string {

@@ -3,7 +3,7 @@ import { TStoryboardElementData, TStoryboardElementSampleData } from "../types/t
 import SbSprite from "./sbSprite";
 
 class SbSample extends SbSprite {
-	#type = ESbElementType.Sample;
+	type = ESbElementType.Sample;
 	#startTime: number = 0;
 	#layer: ESbLayerId = 0;
 	#volume: number = 0;
@@ -19,7 +19,7 @@ class SbSample extends SbSprite {
 	getTitle(data: TStoryboardElementData): string {
 		const { path } = data;
 
-		return [this.#type, this.#startTime, this.#layer, `"${path}"`, this.#volume].join(",");
+		return [this.type, this.#startTime, this.#layer, `"${path}"`, this.#volume].join(",");
 	}
 }
 

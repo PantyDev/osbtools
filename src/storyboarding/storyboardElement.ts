@@ -22,7 +22,7 @@ import { convertPropertyToString } from "../utils/converters";
 import SbVectorValue from "./values/sbVectorValue";
 
 abstract class StoryboardElement {
-	#type: ESbElementType = ESbElementType.Empty;
+	abstract type: ESbElementType;
 	#data: TStoryboardElementData;
 	#properties: TStoryboardElementProperties = [] as unknown as TStoryboardElementProperties;
 
@@ -44,7 +44,7 @@ abstract class StoryboardElement {
 	}
 
 	getType(): ESbElementType {
-		return this.#type;
+		return this.type;
 	}
 
 	getData(): TStoryboardElementData {
