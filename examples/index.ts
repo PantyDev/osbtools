@@ -86,6 +86,8 @@ sprite
 		startTime: 633191
 	});
 
+console.log(sprite.getData().existStartTime, sprite.getData().existEndTime);
+console.log(sprite.getPropertiesByLayer());
 const animation = new SbAnimation({
 	path: "bg.png",
 	layer: ESbLayer.Background,

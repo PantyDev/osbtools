@@ -24,6 +24,8 @@ type TStoryboardElementData = {
 	layer: ESbLayer;
 	origin: ESbElementOrigin;
 	defaultPosition: SbVectorValue;
+	existStartTime: number;
+	existEndTime: number;
 };
 
 type TStoryboardElementAnimationData = {
@@ -44,6 +46,8 @@ type TStoryboardElementDefaultProps = {
 	startTime: number;
 	endTime?: number;
 };
+
+type TStoryboardElementPropertiesByLayer = Record<ESbElementProperty, TStoryboardElementProperties>;
 
 type TStoryboardElementProperties = Array<TStoryboardElementPropertyItem<ESbElementProperty>> & {
 	getProperty: <T extends ESbElementProperty>(index: number) => TStoryboardElementPropertyItem<T>;
@@ -157,6 +161,7 @@ export type {
 	TSbLayerData,
 	TUnstrictStoryboardElementData,
 	TStoryboardElementProperties,
+	TStoryboardElementPropertiesByLayer,
 	TStoryboardElementData,
 	TStoryboardElementAnimationData,
 	TStoryboardElementSampleData,
