@@ -9,6 +9,7 @@ import {
 	TStoryboardElementMoveX,
 	TStoryboardElementMoveY,
 	TStoryboardElementProperties,
+	TStoryboardElementPropertiesByLayer,
 	TStoryboardElementPropertyItem,
 	TStoryboardElementPropertyMap,
 	TStoryboardElementRotate,
@@ -20,11 +21,15 @@ import {
 import { UnionToIntersection } from "../types/utils";
 import { convertPropertyToString } from "../utils/converters";
 import SbVectorValue from "./values/sbVectorValue";
-
+const storyboardElementPropertyMap = Object.values(ESbElementProperty).reduce((acc, key) => {
+	acc[key as ESbElementProperty] = [] as unknown as TStoryboardElementProperties;
+	return acc;
+}, {} as TStoryboardElementPropertiesByLayer);
 abstract class StoryboardElement {
 	abstract type: ESbElementType;
 	#data: TStoryboardElementData;
 	#properties: TStoryboardElementProperties = [] as unknown as TStoryboardElementProperties;
+	#propertiesByLayer: TStoryboardElementPropertiesByLayer = storyboardElementPropertyMap;
 
 	constructor({
 		path = "",
@@ -57,6 +62,10 @@ abstract class StoryboardElement {
 		return this.#properties;
 	}
 
+	getPropertiesByLayer(): TStoryboardElementPropertiesByLayer | undefined {
+		return this.#propertiesByLayer;
+	}
+
 	getProperty<T extends ESbElementProperty>(
 		index: number,
 		cb?: (property: TStoryboardElementPropertyItem<T>) => TStoryboardElementPropertyItem<T>
@@ -87,11 +96,15 @@ abstract class StoryboardElement {
 
 		this.#setExistTimes(data);
 
-		this.#properties.push({
+		const completedData = {
 			type,
 			data: updatedData,
 			toString: () => convertPropertyToString[convertType](updatedData as TStoryboardElementPropertiesIntersection)
-		});
+		};
+
+		this.#properties.push(completedData);
+
+		this.#propertiesByLayer[type].push(completedData);
 
 		return this;
 	}
