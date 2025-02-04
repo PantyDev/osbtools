@@ -36,7 +36,9 @@ abstract class StoryboardElement {
 			path,
 			layer,
 			origin,
-			defaultPosition
+			defaultPosition,
+			existStartTime: Infinity,
+			existEndTime: -Infinity
 		};
 		this.#properties.getProperty = function <T extends ESbElementProperty>(index: number) {
 			return this[index] as TStoryboardElementPropertyItem<T>;
@@ -63,6 +65,13 @@ abstract class StoryboardElement {
 		return this.#properties[index] as TStoryboardElementPropertyItem<T>;
 	}
 
+	#setExistTimes(data: TStoryboardElementDefaultProps) {
+		this.#data.existStartTime = Math.min(data.startTime, this.#data.existStartTime ?? data.startTime);
+
+		const endTime = data.endTime === undefined ? data.startTime : data.endTime;
+		this.#data.existEndTime = Math.max(endTime ?? -Infinity, this.#data.existEndTime ?? -Infinity);
+	}
+
 	#addProperty<T extends ESbElementProperty>(
 		type: T,
 		data: TStoryboardElementPropertyMap[T],
@@ -75,6 +84,8 @@ abstract class StoryboardElement {
 		type TStoryboardElementPropertiesIntersection = UnionToIntersection<
 			TStoryboardElementPropertyMap[keyof TStoryboardElementPropertyMap]
 		>;
+
+		this.#setExistTimes(data);
 
 		this.#properties.push({
 			type,

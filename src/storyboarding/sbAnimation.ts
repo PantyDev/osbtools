@@ -24,6 +24,18 @@ class SbAnimation extends SbSprite {
 		this.#loopType = loopType;
 	}
 
+	getFrameCount() {
+		return this.#frameCount;
+	}
+
+	getFrameDelay() {
+		return this.#frameDelay;
+	}
+
+	getLoopType() {
+		return this.#loopType;
+	}
+
 	getTitle(data: TStoryboardElementData): string {
 		const { layer, origin, path, defaultPosition } = data;
 

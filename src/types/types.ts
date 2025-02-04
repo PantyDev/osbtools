@@ -24,6 +24,8 @@ type TStoryboardElementData = {
 	layer: ESbLayer;
 	origin: ESbElementOrigin;
 	defaultPosition: SbVectorValue;
+	existStartTime: number;
+	existEndTime: number;
 };
 
 type TStoryboardElementAnimationData = {

@@ -16,6 +16,18 @@ class SbSample extends SbSprite {
 		this.#volume = volume;
 	}
 
+	getStartTime() {
+		return this.#startTime;
+	}
+
+	getLayer() {
+		return this.#layer;
+	}
+
+	getVolume() {
+		return this.#volume;
+	}
+
 	getTitle(data: TStoryboardElementData): string {
 		const { path } = data;
 
