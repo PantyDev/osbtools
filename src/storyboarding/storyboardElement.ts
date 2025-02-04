@@ -9,6 +9,7 @@ import {
 	TStoryboardElementMoveX,
 	TStoryboardElementMoveY,
 	TStoryboardElementProperties,
+	TStoryboardElementPropertiesByLayer,
 	TStoryboardElementPropertyItem,
 	TStoryboardElementPropertyMap,
 	TStoryboardElementRotate,
@@ -20,11 +21,15 @@ import {
 import { UnionToIntersection } from "../types/utils";
 import { convertPropertyToString } from "../utils/converters";
 import SbVectorValue from "./values/sbVectorValue";
-
+const storyboardElementPropertyMap = Object.values(ESbElementProperty).reduce((acc, key) => {
+	acc[key as ESbElementProperty] = [] as unknown as TStoryboardElementProperties;
+	return acc;
+}, {} as TStoryboardElementPropertiesByLayer);
 abstract class StoryboardElement {
 	abstract type: ESbElementType;
 	#data: TStoryboardElementData;
 	#properties: TStoryboardElementProperties = [] as unknown as TStoryboardElementProperties;
+	#propertiesByLayer: TStoryboardElementPropertiesByLayer = storyboardElementPropertyMap;
 
 	constructor({
 		path = "",
@@ -36,7 +41,9 @@ abstract class StoryboardElement {
 			path,
 			layer,
 			origin,
-			defaultPosition
+			defaultPosition,
+			existStartTime: Infinity,
+			existEndTime: -Infinity
 		};
 		this.#properties.getProperty = function <T extends ESbElementProperty>(index: number) {
 			return this[index] as TStoryboardElementPropertyItem<T>;
@@ -55,12 +62,23 @@ abstract class StoryboardElement {
 		return this.#properties;
 	}
 
+	getPropertiesByLayer(): TStoryboardElementPropertiesByLayer | undefined {
+		return this.#propertiesByLayer;
+	}
+
 	getProperty<T extends ESbElementProperty>(
 		index: number,
 		cb?: (property: TStoryboardElementPropertyItem<T>) => TStoryboardElementPropertyItem<T>
 	): TStoryboardElementPropertyItem<T> {
 		if (cb) this.#properties[index] = cb(this.#properties[index] as TStoryboardElementPropertyItem<T>);
 		return this.#properties[index] as TStoryboardElementPropertyItem<T>;
+	}
+
+	#setExistTimes(data: TStoryboardElementDefaultProps) {
+		this.#data.existStartTime = Math.min(data.startTime, this.#data.existStartTime ?? data.startTime);
+
+		const endTime = data.endTime === undefined ? data.startTime : data.endTime;
+		this.#data.existEndTime = Math.max(endTime ?? -Infinity, this.#data.existEndTime ?? -Infinity);
 	}
 
 	#addProperty<T extends ESbElementProperty>(
@@ -76,11 +94,17 @@ abstract class StoryboardElement {
 			TStoryboardElementPropertyMap[keyof TStoryboardElementPropertyMap]
 		>;
 
-		this.#properties.push({
+		this.#setExistTimes(data);
+
+		const completedData = {
 			type,
 			data: updatedData,
 			toString: () => convertPropertyToString[convertType](updatedData as TStoryboardElementPropertiesIntersection)
-		});
+		};
+
+		this.#properties.push(completedData);
+
+		this.#propertiesByLayer[type].push(completedData);
 
 		return this;
 	}

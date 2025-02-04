@@ -14,12 +14,20 @@ import {
 	TStoryboardSpriteLineParams
 } from "../types/types";
 
+const tryToParseStringArrayToNumber = (lines: string[]) =>
+	lines.map((item) => {
+		const isSomethingStrange = isNaN(Number(item)) || item === "";
+		const strangeItem = item === "" ? undefined : item;
+		return isSomethingStrange ? strangeItem : Number(item);
+	});
 const parseElementTitle = (line: string, type: ESbElementType, cb: (element: StoryboardElement | null) => void) => {
 	if (line.startsWith(type)) {
 		let currentElement = null;
 		switch (type) {
 			case ESbElementType.Sprite: {
-				const [, layer, origin, path, posX, posY] = line.split(",") as TStoryboardSpriteLineParams;
+				const [, layer, origin, path, posX, posY] = tryToParseStringArrayToNumber(
+					line.split(",")
+				) as TStoryboardSpriteLineParams;
 
 				currentElement = new SbSprite({
 					path: path.slice(1, -1),
@@ -30,8 +38,8 @@ const parseElementTitle = (line: string, type: ESbElementType, cb: (element: Sto
 				break;
 			}
 			case ESbElementType.Animation: {
-				const [, layer, origin, path, posX, posY, frameCount, frameDelay, loopType] = line.split(
-					","
+				const [, layer, origin, path, posX, posY, frameCount, frameDelay, loopType] = tryToParseStringArrayToNumber(
+					line.split(",")
 				) as TStoryboardAnimationParams;
 
 				currentElement = new SbAnimation({
@@ -46,7 +54,9 @@ const parseElementTitle = (line: string, type: ESbElementType, cb: (element: Sto
 				break;
 			}
 			case ESbElementType.Sample: {
-				const [, startTime, layer, path, volume] = line.split(",") as TStoryboardSampleParams;
+				const [, startTime, layer, path, volume] = tryToParseStringArrayToNumber(
+					line.split(",")
+				) as TStoryboardSampleParams;
 
 				currentElement = new SbSample({
 					startTime,
@@ -66,11 +76,9 @@ const parseElementProperty = (line: string, type: ESbElementProperty, element: S
 	if (line.startsWith(type)) {
 		switch (type) {
 			case ESbElementProperty.M: {
-				const [, easing, startTime, endTime, startPosX, startPosY, endPosX, endPosY] = line.split(",") as [
-					...TStoryboardElementDefaultNumericParams,
-					number,
-					number
-				];
+				const [, easing, startTime, endTime, startPosX, startPosY, endPosX, endPosY] = tryToParseStringArrayToNumber(
+					line.split(",")
+				) as [...TStoryboardElementDefaultNumericParams, number, number];
 				element.move({
 					easing,
 					startTime,
@@ -84,8 +92,8 @@ const parseElementProperty = (line: string, type: ESbElementProperty, element: S
 				break;
 			}
 			case ESbElementProperty.MX: {
-				const [, easing, startTime, endTime, startPositionX, endPositionX] = line.split(
-					","
+				const [, easing, startTime, endTime, startPositionX, endPositionX] = tryToParseStringArrayToNumber(
+					line.split(",")
 				) as TStoryboardElementDefaultNumericParams;
 				element.moveX({
 					easing,
@@ -97,8 +105,8 @@ const parseElementProperty = (line: string, type: ESbElementProperty, element: S
 				break;
 			}
 			case ESbElementProperty.MY: {
-				const [, easing, startTime, endTime, startPositionY, endPositionY] = line.split(
-					","
+				const [, easing, startTime, endTime, startPositionY, endPositionY] = tryToParseStringArrayToNumber(
+					line.split(",")
 				) as TStoryboardElementDefaultNumericParams;
 				element.moveY({
 					easing,
@@ -110,8 +118,8 @@ const parseElementProperty = (line: string, type: ESbElementProperty, element: S
 				break;
 			}
 			case ESbElementProperty.R: {
-				const [, easing, startTime, endTime, startRotation, endRotation] = line.split(
-					","
+				const [, easing, startTime, endTime, startRotation, endRotation] = tryToParseStringArrayToNumber(
+					line.split(",")
 				) as TStoryboardElementDefaultNumericParams;
 				element.rotate({
 					easing,
@@ -123,8 +131,8 @@ const parseElementProperty = (line: string, type: ESbElementProperty, element: S
 				break;
 			}
 			case ESbElementProperty.F: {
-				const [, easing, startTime, endTime, startFade, endFade] = line.split(
-					","
+				const [, easing, startTime, endTime, startFade, endFade] = tryToParseStringArrayToNumber(
+					line.split(",")
 				) as TStoryboardElementDefaultNumericParams;
 				element.fade({
 					easing,
@@ -136,8 +144,8 @@ const parseElementProperty = (line: string, type: ESbElementProperty, element: S
 				break;
 			}
 			case ESbElementProperty.S: {
-				const [, easing, startTime, endTime, startScale, endScale] = line.split(
-					","
+				const [, easing, startTime, endTime, startScale, endScale] = tryToParseStringArrayToNumber(
+					line.split(",")
 				) as TStoryboardElementDefaultNumericParams;
 				element.scale({
 					easing,
@@ -149,11 +157,8 @@ const parseElementProperty = (line: string, type: ESbElementProperty, element: S
 				break;
 			}
 			case ESbElementProperty.V: {
-				const [, easing, startTime, endTime, startScaleX, startScaleY, endScaleX, endScaleY] = line.split(",") as [
-					...TStoryboardElementDefaultNumericParams,
-					number,
-					number
-				];
+				const [, easing, startTime, endTime, startScaleX, startScaleY, endScaleX, endScaleY] =
+					tryToParseStringArrayToNumber(line.split(",")) as [...TStoryboardElementDefaultNumericParams, number, number];
 				element.scaleVec({
 					easing,
 					startTime,
@@ -171,7 +176,13 @@ const parseElementProperty = (line: string, type: ESbElementProperty, element: S
 			}
 			case ESbElementProperty.C: {
 				const [, easing, startTime, endTime, startColorR, startColorG, startColorB, endColorR, endColorG, endColorB] =
-					line.split(",") as [...TStoryboardElementDefaultNumericParams, number, number, number, number];
+					tryToParseStringArrayToNumber(line.split(",")) as [
+						...TStoryboardElementDefaultNumericParams,
+						number,
+						number,
+						number,
+						number
+					];
 				element.color({
 					easing,
 					startTime,
@@ -190,7 +201,7 @@ const parseElementProperty = (line: string, type: ESbElementProperty, element: S
 				break;
 			}
 			case ESbElementProperty.P: {
-				const [, easing, startTime, endTime, parameterType] = line.split(",") as [
+				const [, easing, startTime, endTime, parameterType] = tryToParseStringArrayToNumber(line.split(",")) as [
 					...TStoryboardElementDefaultParams,
 					TStoryboardElementParametersTypes
 				];
@@ -233,7 +244,7 @@ const parseElementGroupProperty = (
 ) => {
 	switch (type) {
 		case ESbElementProperty.L: {
-			const [, startTime, loopCount] = line.split(",") as [string, number, number];
+			const [, startTime, loopCount] = tryToParseStringArrayToNumber(line.split(",")) as [string, number, number];
 			element.loop({
 				startTime,
 				loopCount,
@@ -244,7 +255,12 @@ const parseElementGroupProperty = (
 			break;
 		}
 		case ESbElementProperty.T: {
-			const [, triggerName, startTime, endTime] = line.split(",") as [string, string, number, number];
+			const [, triggerName, startTime, endTime] = tryToParseStringArrayToNumber(line.split(",")) as [
+				string,
+				string,
+				number,
+				number
+			];
 			element.trigger({
 				startTime,
 				endTime,
